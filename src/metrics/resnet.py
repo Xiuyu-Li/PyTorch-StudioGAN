@@ -82,7 +82,7 @@ class ResNet(nn.Module):
     def __init__(self, dataset, depth, num_classes, bottleneck=False):
         super(ResNet, self).__init__()
         self.dataset = dataset
-        if self.dataset.startswith("CIFAR10"):
+        if self.dataset.startswith("CIFAR10") or self.dataset == "artCIFAR10":
             self.inplanes = 16
             if bottleneck == True:
                 n = int((depth - 2) / 9)
@@ -142,7 +142,7 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        if self.dataset == "CIFAR10" or self.dataset == "CIFAR100":
+        if self.dataset == "CIFAR10" or self.dataset == "CIFAR100" or self.dataset == "artCIFAR10":
             x = self.conv1(x)
             x = self.bn1(x)
             x = self.relu(x)

@@ -161,6 +161,8 @@ class WORKER(object):
             self.num_eval = {"train": 50000, "test": 10000}
         elif self.DATA.name == "CIFAR100":
             self.num_eval = {"train": 50000, "test": 10000}
+        elif self.DATA.name == "artCIFAR10":
+            self.num_eval = {"train": 50000, "test": 10000}
         elif self.DATA.name == "Tiny_ImageNet":
             self.num_eval = {"train": 50000, "valid": 10000}
         elif self.DATA.name == "ImageNet":

@@ -340,12 +340,22 @@ class Configurations(object):
         # -----------------------------------------------------------------------------
         self.MISC = misc.make_empty_object()
 
-        self.MISC.no_proc_data = ["CIFAR10", "CIFAR100", "Tiny_ImageNet"]
+        self.MISC.no_proc_data = ["CIFAR10", "CIFAR100", "artCIFAR10", "Tiny_ImageNet"]
         self.MISC.base_folders = ["checkpoints", "figures", "logs", "moments", "samples", "values"]
         self.MISC.classifier_based_GAN = ["AC", "2C", "D2DCE"]
         self.MISC.info_params = ["info_discrete_linear", "info_conti_mu_linear", "info_conti_var_linear"]
         self.MISC.cas_setting = {
             "CIFAR10": {
+                "batch_size": 128,
+                "epochs": 90,
+                "depth": 32,
+                "lr": 0.1,
+                "momentum": 0.9,
+                "weight_decay": 1e-4,
+                "print_freq": 1,
+                "bottleneck": True
+            },
+            "artCIFAR10": {
                 "batch_size": 128,
                 "epochs": 90,
                 "depth": 32,
@@ -723,7 +733,7 @@ class Configurations(object):
         if self.OPTIMIZATION.world_size > 1 and self.RUN.synchronized_bn:
             assert not self.RUN.batch_statistics, "batch_statistics cannot be used with synchronized_bn."
 
-        if self.DATA.name in ["CIFAR10", "CIFAR100"]:
+        if self.DATA.name in ["CIFAR10", "CIFAR100", "artCIFAR10"]:
             assert self.RUN.ref_dataset in ["train", "test"], "There is no data for validation."
 
         if self.RUN.interpolation:

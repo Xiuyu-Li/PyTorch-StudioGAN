@@ -213,7 +213,7 @@ def conv3x3(in_planes, out_planes, stride=1):
 
 def adjust_learning_rate(optimizer, lr_org, epoch, total_epoch, dataset):
     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
-    if dataset in ["CIFAR10", "CIFAR100"]:
+    if dataset in ["CIFAR10", "CIFAR100", "artCIFAR10"]:
         lr = lr_org * (0.1 ** (epoch // (total_epoch * 0.5))) * (0.1 ** (epoch // (total_epoch * 0.75)))
     elif dataset in ["Tiny_ImageNet", "ImageNet"]:
         if total_epoch == 300:
