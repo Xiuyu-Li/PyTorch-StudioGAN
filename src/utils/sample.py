@@ -50,8 +50,10 @@ def sample_y(y_sampler, batch_size, num_classes, device):
         indices = np.random.permutation(num_classes)[:num_classes_plot]
 
     elif y_sampler == "acending_all":
-        batch_size = num_classes * 8
-        indices = [c for c in range(num_classes)]
+        # batch_size = num_classes * 8
+        # indices = [c for c in range(num_classes)]
+        batch_size = num_classes * 2 * 8 if num_classes < 16 else num_classes * 8
+        indices = [c % num_classes for c in range(batch_size // 8)]
 
     elif isinstance(y_sampler, int):
         y_fake = torch.tensor([y_sampler] * batch_size, dtype=torch.long).to(device)
