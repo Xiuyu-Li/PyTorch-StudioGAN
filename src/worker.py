@@ -1099,10 +1099,11 @@ class WORKER(object):
                                                                         style_mixing_p=0.0,
                                                                         stylegan_update_emas=False,
                                                                         cal_trsp_cost=False)
+                torch.save(fake_images, 'fake_images_sample.pt')
                 fake_anchor = torch.unsqueeze(fake_images[0], dim=0)
-                fake_anchor = ops.quantize_images(fake_anchor)
-                fake_anchor = ops.resize_images(fake_anchor, resizer, trsf, mean, std)
-                fake_anchor_embed = torch.squeeze(resnet50_conv(fake_anchor))
+                fake_anchor_quant = ops.quantize_images(fake_anchor)
+                # fake_anchor = ops.resize_images(fake_anchor, resizer, trsf, mean, std)
+                fake_anchor_embed = torch.squeeze(resnet50_conv(ops.resize_images(fake_anchor_quant, resizer, trsf, mean, std)))
 
                 num_samples, target_sampler = sample.make_target_cls_sampler(dataset=dataset, target_class=c)
                 batch_size = self.OPTIMIZATION.batch_size if num_samples >= self.OPTIMIZATION.batch_size else num_samples
@@ -1115,9 +1116,9 @@ class WORKER(object):
                 c_iter = iter(c_dataloader)
                 for batch_idx in range(num_samples//batch_size):
                     real_images, real_labels = next(c_iter)
-                    real_images = ops.quantize_images(real_images)
-                    real_images = ops.resize_images(real_images, resizer, trsf, mean, std)
-                    real_embed = torch.squeeze(resnet50_conv(real_images))
+                    real_images_quant = ops.quantize_images(real_images)
+                    # real_images = ops.resize_images(real_images, resizer, trsf, mean, std)
+                    real_embed = torch.squeeze(resnet50_conv(ops.resize_images(real_images_quant, resizer, trsf, mean, std)))
                     if batch_idx == 0:
                         distances = torch.square(real_embed - fake_anchor_embed).mean(dim=1).detach().cpu().numpy()
                         image_holder = real_images.detach().cpu().numpy()

@@ -238,3 +238,10 @@ def resize_images(x, resizer, ToTensor, mean, std, device="cuda"):
     x = torch.stack(x, 0).to(device)
     x = (x/255.0 - mean)/std
     return x
+
+
+def to_tensor(x, ToTensor, device="cuda"):
+    x = x.transpose((0, 2, 3, 1))
+    x = list(map(lambda x: ToTensor(x), list(x)))
+    x = torch.stack(x, 0).to(device)
+    return x
